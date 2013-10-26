@@ -2,6 +2,7 @@ package com.droidplanner;
 
 import android.app.Application;
 
+import android.content.Context;
 import android.os.Handler;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.ardupilotmega.msg_heartbeat;
@@ -9,16 +10,24 @@ import com.MAVLink.Messages.enums.MAV_MODE_FLAG;
 import com.droidplanner.MAVLink.MavLinkMsgHandler;
 import com.droidplanner.MAVLink.MavLinkStreamRates;
 import com.droidplanner.drone.Drone;
+import com.droidplanner.file.DirectoryPath;
+import com.droidplanner.file.IO.VehicleProfile;
+import com.droidplanner.file.IO.VehicleProfileReader;
 import com.droidplanner.helpers.FollowMe;
 import com.droidplanner.helpers.RecordMe;
 import com.droidplanner.helpers.TTS;
 import com.droidplanner.service.MAVLinkClient;
 import com.droidplanner.service.MAVLinkClient.OnMavlinkClientListner;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.*;
+import java.util.HashMap;
 
 public class DroidPlannerApp extends Application implements
 		OnMavlinkClientListner {
 
-	private static long HEARTBEAT_NORMAL_TIMEOUT = 5000;
+    private static final String VEHICLEPROFILE_PATH = "VehicleProfiles";
+    private static long HEARTBEAT_NORMAL_TIMEOUT = 5000;
 	private static long HEARTBEAT_LOST_TIMEOUT = 15000;
 
 	public Drone drone;
@@ -71,9 +80,10 @@ public class DroidPlannerApp extends Application implements
 		recordMe = new RecordMe(this, drone);
 		mavLinkMsgHandler = new com.droidplanner.MAVLink.MavLinkMsgHandler(
 				drone);
+        loadVehicleProfiles(this);
 	}
 
-	@Override
+    @Override
 	public void notifyReceivedData(MAVLinkMessage msg) {
 		if(msg.msgid == msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT){
 			msg_heartbeat msg_heart = (msg_heartbeat) msg;
@@ -146,4 +156,33 @@ public class DroidPlannerApp extends Application implements
 		watchdog.removeCallbacks(watchdogCallback);
 		watchdog.postDelayed(watchdogCallback, timeout);
 	}
+
+    private void loadVehicleProfiles(Context context) {
+        drone.vehicleProfiles = new HashMap<String, VehicleProfile>();
+        try {
+            // TODO: load all
+            final VehicleProfile profile = loadVehicleProfile(context, "ArduCopter2.xml");
+            if(profile != null)
+                drone.vehicleProfiles.put("ArduCopter2", profile);
+        } catch (Exception e) {
+            // nop
+        }
+    }
+
+    private VehicleProfile loadVehicleProfile(Context context, String fileName) throws IOException, XmlPullParserException {
+        final String path = VEHICLEPROFILE_PATH + File.separator + fileName;
+
+        final InputStream inputStream;
+        final File file = new File(DirectoryPath.getDroidPlannerPath() + path);
+        if(file.exists()) {
+            // load from file
+            inputStream = new FileInputStream(file);
+        }
+        else {
+            // load from resource
+            inputStream = context.getAssets().open(path);
+        }
+
+        return VehicleProfileReader.open(inputStream);
+    }
 }
