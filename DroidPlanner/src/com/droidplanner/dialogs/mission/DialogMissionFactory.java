@@ -32,6 +32,9 @@ public class DialogMissionFactory {
 		case CMD_NAV_LAND:
 			dialog = new DialogMissionLand();
 			break;
+        case CMD_NAV_ROI:
+            dialog = new DialogMissionRoi();
+            break;
 		case CMD_CONDITION_CHANGE_ALT:
 			dialog = new DialogMissionCondAlt();
 			break;
