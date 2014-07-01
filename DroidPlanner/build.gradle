@@ -2,15 +2,15 @@ apply plugin: 'android'
 
 dependencies {
     compile files('libs/usbseriallibrary.jar')
-    compile 'com.android.support:support-v4:18.0.0'
-    compile 'com.google.android.gms:play-services:4.0.30'
+    compile 'com.android.support:support-v4:+'
+    compile 'com.google.android.gms:play-services:+'
     compile project(':Mavlink')
     compile project(':HorizontalVariableListView:HorizontalVariableListView')
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.1'
+    buildToolsVersion '19.1.0'
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
