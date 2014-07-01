@@ -8,6 +8,55 @@ Our convention for release control is the following (for a release like DPvA.B.C
 All the changes are logged below (preferable with the pull request numbers in parenteses):
 
 # Releases
+## Droidplanner v2.4.3
+* Improve analytics (#829)
+* Fixed German translation (#831)
+* Restructuring Settings menu (#815)
+* Updating parameters description (#828)
+* Adding support for direct connections to the Pixhawk (#816)
+* Travis CI integration (#821,#824,#829)
+* Fixing log bufferoverflow exception (#834)
+
+## Droidplanner v2.4.2
+* Added google analytics (#813)
+* Update google play services (#813)
+* Update Droneshare library (#814)
+
+## Droidplanner v2.4.1
+* Add basic follow-me UI (810)
+* Add support for OSM (#799)
+* Fix editor tools bugs (#796)
+* Fix gradle build (#795)
+* Fix Eclipse Mavlink build (#797)
+
+## Droidplanner v2.4.0
+* Initial support for Follow-me (#769)
+* Circle mission item, and advanced circle (#790)
+* Offline/Delayed tlog auto upload to DroneShare (#783,#787)
+* Fixing problems and adding test cases for the GeoTool classes (#770)
+
+## Droidplanner v2.3.3
+* Fixing mission upload problem in AC3.2 (#767)
+* Adding support for Hybrid mode (#766)
+
+## Droidplanner v2.3.2
+* Change waypoint max delay to 60s (#730)
+* Land mission item defaults altitude to zero (#752)
+* Mission progress update are reported by TTS (#759)
+
+## Droidplanner v2.3.1
+* Improve Mission Support, Takeoff and ROI (#739)
+* Fix problems with UDP connection (#742)
+* Fix build settings (#748,#749)
+* Add support for Droneshare (#746)
+
+## Droidplanner v2.3.0
+* Decoupling of drone code from Android (#734, #649)
+* Mode change bugfix for copter other than quads (#719)
+* Fixed problems added by #734 in the Coord2D class (#735,#736,#737)
+* Cleaning up Android Studio files (#738,#744)
+* Chinese Translation (#717) 
+
 ## Droidplanner v2.2.5
 * Long press on trash tool removes the entire mission (#714)
 * Clear the previous flight path when arming (#705)

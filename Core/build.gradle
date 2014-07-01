@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    unitTest {
+        java.srcDir file('test')
+    }
+}
+
+configurations {
+    unitTestCompile.extendsFrom runtime
+    unitTestRuntime.extendsFrom unitTestCompile
+}
+
+dependencies {
+    compile 'de.greenrobot:eventbus:2.2.1'
+    compile project(':Mavlink')
+
+    //FIXME: hackish implementation
+    unitTestCompile files("$project.buildDir/intermediates/classes/release")
+    unitTestCompile files("${project(':Mavlink').buildDir}/intermediates/classes/release")
+    unitTestCompile 'junit:junit:3.+'
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        androidTest {
+            java.srcDirs = ['test']
+        }
+    }
+}
+
+task unitTest(type: Test, dependsOn: assemble){
+    description = "run unit tests"
+    testClassesDir = project.sourceSets.unitTest.output.classesDir
+    classpath = project.sourceSets.unitTest.runtimeClasspath
+}
+
+check.dependsOn unitTest
